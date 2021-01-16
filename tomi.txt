@@ -1,0 +1,5 @@
+/pictures/summer
+/pictures/autumn
+/videos
+/movies/harry-potter
+/movies/star-wars
