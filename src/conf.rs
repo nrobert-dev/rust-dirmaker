@@ -10,14 +10,13 @@ pub struct Config{
 }
 
 impl Config {
-    pub fn new(args: &[String]) -> Result<Self, &'static str> {
+    pub fn new(args: &[String]) -> Self {
         if args.len() < 3 {
-             Err("not enough arguments supplied to function!")
-        } else {
+             panic!("not enough arguments supplied, terminating program")
+        } 
             let path = args[1].clone();
             let root = args[2].clone();
-            Ok(Config { path, root })
-        }
+            Config { path, root }
     }
 
 
@@ -26,10 +25,10 @@ impl Config {
         let reader = BufReader::new(file);
     
         for(_index, line) in reader.lines().enumerate(){
-            let new_path = Path::new(&self.root).join(line?);
+            let new_path = Path::new(&self.root).join(line?);    
+            fs::create_dir_all(&new_path)?;
             println!("Created folder : {}", new_path.display());
-    
-            fs::create_dir_all(new_path)?;
+
         }
         Ok(())
     }

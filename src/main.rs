@@ -9,10 +9,7 @@ use crate::conf::Config;
 fn main() {
     let args = env::args().collect::<Vec<String>>();
 
-    let config = Config::new(&args).unwrap_or_else(|err| {
-        println!("Problem parsing {}", err);
-        process::exit(1);
-    });
+    let config = Config::new(&args);
 
     if let Err(e) = config.run(){
         println!("Application error : {}",e);
