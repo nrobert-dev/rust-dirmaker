@@ -36,9 +36,9 @@ fn run(config : Config) -> Result<(), Box<dyn Error>>{
 }
 
 fn main() {
-    let args : Vec<String> = env::args().collect();
+    let args = env::args().collect::<Vec<String>>();
 
-    let config : Config = Config::new(&args).unwrap_or_else(|err| {
+    let config = Config::new(&args).unwrap_or_else(|err| {
         println!("Problem parsing {}", err);
         process::exit(1);
     });
