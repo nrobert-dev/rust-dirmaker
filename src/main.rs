@@ -1,49 +1,17 @@
+
+pub mod conf;
+
 use std::env;
-use std::fs;
 use std::process;
-use std::error::Error;
-use std::io::{BufRead, BufReader};
-use std::path::Path;
 
-
-struct Config{
-    path : String,
-    root : String,
-}
-
-impl Config {
-    fn new(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 3 {
-            return Err("not enough arguments supplied to function!")
-        }
-        let path = args[1].clone();
-        let root = args[2].clone();
-        Ok(Config { path, root })
-    }
-}
-
-fn run(config : Config) -> Result<(), Box<dyn Error>>{
-    let file = fs::File::open(config.path)?;
-    let reader = BufReader::new(file);
-
-    for(_index, line) in reader.lines().enumerate(){
-        let new_path = Path::new(&config.root).join(line?);
-        println!("Created folder : {}", new_path.display());
-
-        fs::create_dir_all(new_path)?;
-    }
-    Ok(())
-}
+use crate::conf::Config;
 
 fn main() {
-    let args : Vec<String> = env::args().collect();
+    let args = env::args().collect::<Vec<String>>();
 
-    let config : Config = Config::new(&args).unwrap_or_else(|err| {
-        println!("Problem parsing {}", err);
-        process::exit(1);
-    });
+    let config = Config::new(&args);
 
-    if let Err(e) = run(config){
+    if let Err(e) = config.run(){
         println!("Application error : {}",e);
         process::exit(1);
     }
