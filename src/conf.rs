@@ -1,3 +1,5 @@
+
+
 use std::error::Error;
 use std::io::{BufRead, BufReader};
 use std::path::Path;
@@ -10,13 +12,8 @@ pub struct Config{
 }
 
 impl Config {
-    pub fn new(args: &[String]) -> Self {
-        if args.len() < 3 {
-             panic!("not enough arguments supplied, terminating program")
-        } 
-            let path = args[1].clone();
-            let root = args[2].clone();
-            Config { path, root }
+    pub fn new(root : &str, path : &str) -> Self {
+            Config { path : path.to_owned(), root: root.to_owned() }
     }
 
 
@@ -33,4 +30,18 @@ impl Config {
         Ok(())
     }
     
+}
+
+
+
+#[cfg(test)]
+mod tests {
+    use crate::conf::Config;
+    #[test]
+    fn test_root_and_path() {
+        let cf = Config::new("./","tomi.txt");
+        println!("{} {}", cf.path, cf.root);
+        assert_eq!(cf.root,"./");
+        assert_eq!(cf.path,"tomi.txt");
+    }
 }
