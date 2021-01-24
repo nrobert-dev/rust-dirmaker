@@ -2,7 +2,6 @@
 pub mod conf;
 
 use std::env;
-
 use crate::conf::{Config, utils};
 
 fn main() {

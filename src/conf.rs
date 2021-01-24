@@ -2,6 +2,7 @@
 
 use std::path::Path;
 use std::fs;
+use std::io::Result;
 
 
 pub struct Config{
@@ -15,7 +16,7 @@ impl Config {
     }
 
 
-    pub fn run(&self, entries :  impl Iterator<Item=String>) -> Result<(), std::io::Error>{
+    pub fn run(&self, entries :  impl Iterator<Item=String>) -> Result<()>{
         for line in entries{
             let new_path = Path::new(&self.root).join(line);    
             fs::create_dir_all(&new_path)?;
@@ -29,15 +30,15 @@ impl Config {
 
 
 pub mod utils {
-    use std::io::{BufRead, BufReader};
+    use std::io::{BufRead, BufReader, Result};
     use std::fs::File;
 
-    pub fn from_file(file_path : &str) ->  Result<impl Iterator<Item=String>, std::io::Error> {
+    pub fn from_file(file_path : &str) ->  Result<impl Iterator<Item=String>> {
         let lines = {
             let file = File::open(file_path)?;
             let reader = BufReader::new(file);
 
-            reader.lines().collect::<Result<Vec<_>,_>>()?
+            reader.lines().collect::<Result<Vec<_>>>()?
         };
         
         Ok(lines.into_iter())
