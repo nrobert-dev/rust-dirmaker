@@ -3,7 +3,7 @@ pub mod conf;
 
 use std::env;
 
-use crate::conf::Config;
+use crate::conf::{Config, utils};
 
 fn main() {
     let args = env::args().collect::<Vec<String>>();
@@ -16,7 +16,7 @@ fn main() {
      
     let config = Config::new(path, root);
 
-    if let Err(e) = config.run(conf::utils::from_file(path).unwrap()){
+    if let Err(e) = config.run(utils::from_file(path).unwrap()){
         panic!("Application error : {}",e);
     }
 }
