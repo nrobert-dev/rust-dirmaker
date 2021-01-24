@@ -40,7 +40,7 @@ pub mod utils {
             reader.lines().collect::<Result<Vec<_>,_>>()?
         };
         
-        Ok(Box::new(lines.into_iter()))
+        Ok(lines.into_iter())
     }
 
 }
