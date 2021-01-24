@@ -1,6 +1,5 @@
 
 
-use std::error::Error;
 use std::path::Path;
 use std::fs;
 
@@ -16,7 +15,7 @@ impl Config {
     }
 
 
-    pub fn run(&self, entries :  Box<dyn Iterator<Item=String>>) -> Result<(), Box<dyn Error>>{
+    pub fn run(&self, entries :  impl Iterator<Item=String>) -> Result<(), std::io::Error>{
         for line in entries{
             let new_path = Path::new(&self.root).join(line);    
             fs::create_dir_all(&new_path)?;
@@ -32,16 +31,14 @@ impl Config {
 pub mod utils {
     use std::io::{BufRead, BufReader};
     use std::fs::File;
-    use std::error::Error;
 
-    pub fn from_file(file_path : &str) ->  Result<Box<dyn Iterator<Item=String>>, Box<dyn Error>> {
-        let lines: Result<Vec<_>, _> = { 
+    pub fn from_file(file_path : &str) ->  Result<impl Iterator<Item=String>, std::io::Error> {
+        let lines = {
             let file = File::open(file_path)?;
             let reader = BufReader::new(file);
 
-            reader.lines().collect() 
+            reader.lines().collect::<Result<Vec<_>,_>>()?
         };
-        let lines = lines?;
         
         Ok(Box::new(lines.into_iter()))
     }
