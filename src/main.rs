@@ -16,7 +16,7 @@ fn main() {
      
     let config = Config::new(path, root);
 
-    if let Err(e) = config.run(){
+    if let Err(e) = config.run(conf::utils::from_file(path).unwrap()){
         panic!("Application error : {}",e);
     }
 }
