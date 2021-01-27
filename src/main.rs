@@ -13,8 +13,8 @@ fn main() -> Result<()> {
     let (path, root) = (&args[1], &args[2]);
     let config = Config::new(path, root);
 
-    let path =  utils::from_file(path)?;
+    let paths =  utils::paths_from_file(path)?;
 
-    config.run(path)?;
+    config.run(paths)?;
     Ok(())
 }

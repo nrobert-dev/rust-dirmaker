@@ -29,7 +29,7 @@ pub mod utils {
     use std::fs::File;
     use std::io::{BufRead, BufReader, Result};
 
-    pub fn from_file(file_path: &str) -> Result<impl IntoIterator<Item = String>> {
+    pub fn paths_from_file(file_path: &str) -> Result<impl IntoIterator<Item = String>> {
         let lines = {
             let file = File::open(file_path)?;
             let reader = BufReader::new(file);
