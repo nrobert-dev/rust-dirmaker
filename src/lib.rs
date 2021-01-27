@@ -44,7 +44,7 @@ pub mod utils {
 mod tests {
     use crate::Config;
     #[test]
-    fn test_root_and_path() {
+    fn root_and_path() {
         //arrange
         let cf = Config::new("./", "tomi.txt");
 

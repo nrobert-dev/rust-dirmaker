@@ -1,4 +1,3 @@
-
 use dirmaker::{utils, Config};
 use std::{env, process};
 
@@ -13,7 +12,15 @@ fn main() {
     let (path, root) = (&args[1], &args[2]);
     let config = Config::new(path, root);
 
-    if let Err(e) = config.run(utils::from_file(path).unwrap()) {
+    let path = match utils::from_file(path) {
+        Err(e) => {
+            eprintln!("Could not creatre a path from {} : {}", path, e);
+            process::exit(-1);
+        }
+        Ok(r) => r,
+    };
+
+    if let Err(e) = config.run(path) {
         eprintln!("Application error : {}", e);
         process::exit(-1);
     }
