@@ -1,21 +1,20 @@
 
-pub mod conf;
-
-use std::env;
-use crate::conf::{Config, utils};
+use dirmaker::{utils, Config};
+use std::{env, process};
 
 fn main() {
     let args = env::args().collect::<Vec<_>>();
 
     if args.len() < 3 {
-        panic!("not enough arguments supplied, terminating program");
+        eprintln!("not enough arguments supplied, terminating program");
+        process::exit(-1);
     }
 
     let (path, root) = (&args[1], &args[2]);
-     
     let config = Config::new(path, root);
 
-    if let Err(e) = config.run(utils::from_file(path).unwrap()){
-        panic!("Application error : {}",e);
+    if let Err(e) = config.run(utils::from_file(path).unwrap()) {
+        eprintln!("Application error : {}", e);
+        process::exit(-1);
     }
 }
