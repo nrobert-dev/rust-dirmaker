@@ -36,7 +36,7 @@ pub mod utils {
 
             reader.lines().collect::<Result<Vec<_>>>()?
         };
-        Ok(lines.into_iter())
+        Ok(lines)
     }
 }
 
