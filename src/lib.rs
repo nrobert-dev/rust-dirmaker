@@ -1,17 +1,17 @@
 use std::fs;
 use std::io::Result;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 pub struct Config {
-    path: &'static Path,
+    path: PathBuf,
     root: String,
 }
 
 impl Config {
-    pub fn new(root: &str, path: &'static str) -> Self {
+    pub fn new(root: impl Into<String>, path: impl Into<String>) -> Self {
         Config {
-            path: Path::new(path),
-            root: root.to_owned(),
+            path: Path::new(&path.into()).to_owned(),
+            root: root.into(),
         }
     }
 
