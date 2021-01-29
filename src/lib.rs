@@ -1,18 +1,26 @@
 use std::fs;
 use std::io::Result;
 use std::path::{Path, PathBuf};
+use std::env;
 
 pub struct Config {
     path: PathBuf,
-    root: String,
+    root: PathBuf,
 }
 
 impl Config {
-    pub fn new(root: impl Into<String>, path: impl Into<String>) -> Self {
-        Config {
+    pub fn new(root: impl Into<String>, path: impl Into<String>) -> Result<Self> {
+        Ok(Config {
             path: Path::new(&path.into()).to_owned(),
-            root: root.into(),
-        }
+            root: Path::new(&root.into()).to_owned(),
+        })
+    }
+
+    pub fn new_default(path: impl Into<String>) -> Result<Self>{
+        Ok(Config {
+            path : Path::new(&path.into()).to_owned(),
+            root : env::current_dir()?
+        })
     }
 
     pub fn run(&self, entries: impl IntoIterator<Item = String>) -> Result<()> {

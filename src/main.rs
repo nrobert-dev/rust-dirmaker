@@ -5,16 +5,31 @@ use std::io::Result;
 fn main() -> Result<()> {
     let args = env::args().collect::<Vec<_>>();
 
-    if args.len() < 3 {
-        eprintln!("not enough arguments supplied, terminating program");
-        process::exit(-1);
+
+    let config = match args.len() {
+        0 | 1 => {
+            eprintln!("Not enough arguments supplied, terminating program");
+            process::exit(-1);
+        }
+        2 => {
+            Config::new_default(&args[1])
+        }
+        3 => {
+            let (path, root) = (&args[1], &args[2]);
+            Config::new(root, path)
+        }
+        _ => {
+            eprintln!("Could not execute, terminating program");
+            process::exit(-1); 
+        }
+    };
+
+    let paths = utils::paths_from_file(&args[1])?;
+    
+    match config {
+        Ok(config) => config.run(paths)?,
+        Err(error) => eprintln!("{:?}", error)
     }
 
-    let (path, root) = (&args[1], &args[2]);
-    let config = Config::new(path, root);
-
-    let paths =  utils::paths_from_file(path)?;
-
-    config.run(paths)?;
     Ok(())
 }
