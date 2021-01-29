@@ -19,13 +19,14 @@ fn main() -> Result<()> {
             Config::new(root, path)
         }
         _ => {
-            eprintln!("Could not execute, terminating program");
+            //TODO decision, how to handle more than 3 arguments passed to the command
+            eprintln!("Wrong number of arguments supplied");
             process::exit(-1); 
         }
     };
 
     let paths = utils::paths_from_file(&args[1])?;
-    
+
     match config {
         Ok(config) => config.run(paths)?,
         Err(error) => eprintln!("{:?}", error)
