@@ -1,18 +1,20 @@
+use dirmaker::{utils, Config};
+use std::{env, process};
+use std::io::Result;
 
-pub mod conf;
+fn main() -> Result<()> {
+    let args = env::args().collect::<Vec<_>>();
 
-use std::env;
-use std::process;
-
-use crate::conf::Config;
-
-fn main() {
-    let args = env::args().collect::<Vec<String>>();
-
-    let config = Config::new(&args);
-
-    if let Err(e) = config.run(){
-        println!("Application error : {}",e);
-        process::exit(1);
+    if args.len() < 3 {
+        eprintln!("not enough arguments supplied, terminating program");
+        process::exit(-1);
     }
+
+    let (path, root) = (&args[1], &args[2]);
+    let config = Config::new(path, root);
+
+    let paths =  utils::paths_from_file(path)?;
+
+    config.run(paths)?;
+    Ok(())
 }

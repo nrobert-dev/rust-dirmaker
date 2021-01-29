@@ -1,5 +1,5 @@
 [package]
-name = "rust-dirmaker"
+name = "dirmaker"
 version = "0.1.0"
 authors = ["nrobertdev <robert.nechitelea@gmail.com>"]
 edition = "2018"
